@@ -60,39 +60,75 @@ class loginBloc extends Bloc<LOginEvent, loginState> {
 //       );
 //     }
 //
-//     if (event is PostLOgin) {
-//       try {
-//
-//         yield state.rebuild((b) => b
-//           ..isLoading = true
-//           ..error = ""
-//           ..success = false
-//           ..data = null
-//         );
-// // print("im here");
-// // print(event.Email!);
-// // print(event.fcmToken!);
-// // print(event.password!);
-//       //  final date = await _repository.login(event.Email!, event.password!,event.fcmToken!);
-// print(date);
-//
-//         yield state.rebuild((b) => b
-//           ..isLoading = false
-//           ..error = ""
-//           ..success= true
-//           ..data.replace(date)
-//         );
-//
-//       } catch (e) {
-//         print('get Error $e');
-//         yield state.rebuild((b) => b
-//           ..isLoading = false
-//           ..error = "Something went wrong"
-//           ..success = false
-//           ..data = null
-//         );
-//       }
-//     }
+
+    if (event is PostLOgin) {
+      try {
+        yield state.rebuild((b) => b
+          ..isLoading = true
+          ..error = ""
+          ..success = false
+          ..data = null
+        );
+
+       final date = await _repository.Login(event.Email!, event.password!);
+        print(date);
+
+        yield state.rebuild((b) => b
+          ..isLoading = false
+          ..error = ""
+          ..success= true
+          ..data.replace(date)
+        );
+
+      } catch (e) {
+        print('get Error $e');
+        yield state.rebuild((b) => b
+          ..isLoading = false
+          ..error = ""
+          ..success = false
+           ..data = null
+        );
+      }
+    }
+    if (event is SignInFacebook) {
+      try {
+        yield state.rebuild((b) => b
+          ..isLoading = true
+          ..error = ""
+          ..success = false
+          ..data = null
+        );
+
+       final date = await _repository.SignInFacebook(event.AccessToken!);
+        print(date);
+
+        yield state.rebuild((b) => b
+          ..isLoading = false
+          ..error = ""
+          ..success= true
+          ..data.replace(date)
+        );
+
+      } catch (e) {
+        print('get Error $e');
+        yield state.rebuild((b) => b
+          ..isLoading = false
+          ..error = ""
+          ..success = false
+           ..data = null
+        );
+      }
+    }
+    if (event is Switch_ForgotPasswordScreen) {
+      try {
+        yield state.rebuild((b) => b
+          ..ForgotPassScreen_Switch = event.Value
+        );
+
+      }catch(e){
+        print(e);
+      }
+    }
 //     if (event is LoginWithPhone) {
 //       try {
 //
@@ -184,6 +220,8 @@ class loginBloc extends Bloc<LOginEvent, loginState> {
 //         );
 //       }
 //     }
+
+
     if (event is ChangeIconStatus) {
       try {
 

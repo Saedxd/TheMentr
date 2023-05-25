@@ -1,8 +1,15 @@
 // ignore_for_file: constant_identifier_names, file_names
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thementr/UI/Auth/EducationBackGround_Screen/bloc/EducationBackground_bloc.dart';
+import 'package:thementr/UI/Auth/ForgetPassword_Screen/bloc/ForgotPassword_bloc.dart';
+import 'package:thementr/UI/Auth/LinkToPortfolio_Screen/bloc/LinkToPortfolio_bloc.dart';
 import 'package:thementr/UI/Auth/Login_screen/bloc/login_bloc.dart';
+import 'package:thementr/UI/Auth/NewPassword_Screen/bloc/NewPassword_bloc.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/bloc/SignUp_bloc.dart';
+import 'package:thementr/UI/Auth/Verification_Screen/bloc/Verification_bloc.dart';
+import 'package:thementr/UI/Auth/WorkExperience_Screen/bloc/WorkExperienceBloc.dart';
+import 'package:thementr/UI/Home/HomeScreen/bloc/HomePage_Bloc.dart';
 import 'package:thementr/UI/OnBoarding/Slider2/bloc/Slider_bloc.dart';
 import 'Data/http_helper/Ihttp_helper.dart';
 import 'Data/http_helper/http_helper.dart';
@@ -14,7 +21,7 @@ import 'Data/repository/repository.dart';
 final sl = GetIt.instance;
 
 
-const BaseUrl = "https://thementr.org/v2/";
+const BaseUrl = "https://the-mentr.onrender.com/api/";
 
 
 Future iniGetIt() async {
@@ -35,6 +42,13 @@ Future iniGetIt() async {
  sl.registerFactory(() => loginBloc(sl()));
  sl.registerFactory(() => SignUpBloc(sl()));
  sl.registerFactory(() => SliderBloc(sl()));
+ sl.registerFactory(() => HomePageBloc(sl()));
+ sl.registerFactory(() => ForgotPasswordBloc(sl()));
+ sl.registerFactory(() => VerificationBloc(sl()));
+ sl.registerFactory(() => NewPasswordBloc(sl()));
+ sl.registerFactory(() => LinkToPortfolioBloc(sl()));
+ sl.registerFactory(() => WorkExperienceBloc(sl()));
+ sl.registerFactory(() => EducationBackgroundBloc(sl()));
  // sl.registerFactory(() => HomePageBloc(sl()));
 
 

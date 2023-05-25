@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:873514032021:android:a9b031c50b3acf1f41349c",
+        "mobilesdk_app_id": "1:873514032021:android:1968ba183725f98a41349c",
         "android_client_info": {
-          "package_name": "com.Saedyo45.thementr"
+          "package_name": "com.OptikkalTech.thementr"
         }
       },
       "oauth_client": [
         {
-          "client_id": "873514032021-ln4lg254rm3vh7peeuf129u7og1gn3t4.apps.googleusercontent.com",
+          "client_id": "873514032021-nfimrrjhj0sqddqphqle103n4m0qfa34.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.OptikkalTech.thementr",
+            "certificate_hash": "4074e8a1ac6a892d81c663d764fcbc85cf5719f9"
+          }
+        },
+        {
+          "client_id": "873514032021-dami2i2kmvl035ig327g4f2q6kov1dto.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "873514032021-ln4lg254rm3vh7peeuf129u7og1gn3t4.apps.googleusercontent.com",
+              "client_id": "873514032021-dami2i2kmvl035ig327g4f2q6kov1dto.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "873514032021-i011bnup6mg7q7hmuuoo0i71lr31e711.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.OptikkalTech.thementr"
+              }
             }
           ]
         }

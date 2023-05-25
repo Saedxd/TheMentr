@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:thementr/Core/widgets/RandomWidgets.dart';
+import 'package:thementr/Core/Functions/Fucntions.dart';
+
 
 class Button2 extends StatefulWidget {
    Button2({Key? key,required this.ButtonText,required this.Color}) : super(key: key);

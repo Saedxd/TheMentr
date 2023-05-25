@@ -14,6 +14,8 @@ abstract class IPrefsHelper {
 
 
 
+  Future<String> getToken();
+  Future<void> SetToken(String token);
   Future<SharedPreferences> getPrefs();
   Future<bool> GetIsNewUser();
   Future<void> SetNOTnewUser();

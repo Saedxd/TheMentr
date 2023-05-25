@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- UPDATE TOKENS AND KEYS-->
-    <string name="facebook_client_token">9e25355f78aa08d3f8c2d244563d5169</string>
+    <string name="facebook_client_token">d364a0cf52fccfc1369fb9b60ffb8b0c</string>
     <string name="facebook_app_id">422957610034154</string>
 
     <string name="fb_login_protocol_scheme">fb422957610034154</string>

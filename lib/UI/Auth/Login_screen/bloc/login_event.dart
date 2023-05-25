@@ -24,61 +24,40 @@ abstract class PostLOgin extends LOginEvent
   factory PostLOgin([updates(PostLOginBuilder b)]) = _$PostLOgin;
 }
 
-abstract class SignInApple extends LOginEvent
-    implements Built<SignInApple,SignInAppleBuilder> {
+// abstract class SendOtp extends LOginEvent
+//     implements Built<SendOtp,SendOtpBuilder> {
+//
+//   String?  get Email;
+//   String?  get fcmToken;
+//   String?  get FirstName;
+//   String?  get Lastname;
+//
+//   SendOtp._();
+//
+//   factory SendOtp([updates(SendOtpBuilder b)]) = _$SendOtp;
+// }
+//
+//
 
-  String?  get Email;
-  String?  get fcmToken;
-  String?  get FirstName;
-  String?  get Lastname;
-
-  SignInApple._();
-
-  factory SignInApple([updates(SignInAppleBuilder b)]) = _$SignInApple;
-}
-
-
-abstract class LoginSocial extends LOginEvent
-    implements Built<LoginSocial, LoginSocialBuilder> {
-  LoginSocial._();
-
-  String? get  fcmToken;
-  String? get Token;
-  factory LoginSocial([updates(LoginSocialBuilder b)]) = _$LoginSocial;
-}
+// abstract class LoginGoogle extends LOginEvent
+//     implements Built<LoginGoogle, LoginGoogleBuilder> {
+//   LoginGoogle._();
+//
+// String? get Email;
+// String? get name;
+// String? get fcmToken;
+// String? get avatar;
+//   factory LoginGoogle([updates(LoginGoogleBuilder b)]) = _$LoginGoogle;
+// }
+//
+// abstract class ClearError extends LOginEvent
+//     implements Built<ClearError, ClearErrorBuilder> {
+//   ClearError._();
+//   factory ClearError([updates(ClearErrorBuilder b)]) = _$ClearError;
+// }
+//
 
 
-abstract class LoginGoogle extends LOginEvent
-    implements Built<LoginGoogle, LoginGoogleBuilder> {
-  LoginGoogle._();
-
-String? get Email;
-String? get name;
-String? get fcmToken;
-String? get avatar;
-  factory LoginGoogle([updates(LoginGoogleBuilder b)]) = _$LoginGoogle;
-}
-
-abstract class ClearError extends LOginEvent
-    implements Built<ClearError, ClearErrorBuilder> {
-  ClearError._();
-  factory ClearError([updates(ClearErrorBuilder b)]) = _$ClearError;
-}
-
-abstract class SetPermission extends LOginEvent
-    implements Built<SetPermission, SetPermissionBuilder> {
-  SetPermission._();
-  int? get is_notify;
-  factory SetPermission([updates(SetPermissionBuilder b)]) = _$SetPermission;
-}
-
-abstract class LoginWithPhone extends LOginEvent
-    implements  Built<LoginWithPhone,LoginWithPhoneBuilder> {
-  String? get Phone;
-  String? get fcmToken;
-  LoginWithPhone._();
-  factory LoginWithPhone([updates(LoginWithPhoneBuilder b)]) = _$LoginWithPhone;
-}
 abstract class ChangeIconStatus extends LOginEvent
     implements  Built<ChangeIconStatus,ChangeIconStatusBuilder> {
 
@@ -92,8 +71,18 @@ abstract class ChangeCheckBoxStatus extends LOginEvent
   factory ChangeCheckBoxStatus([updates(ChangeCheckBoxStatusBuilder b)]) = _$ChangeCheckBoxStatus;
 }
 
+abstract class SignInFacebook extends LOginEvent
+    implements Built<SignInFacebook, SignInFacebookBuilder> {
+  SignInFacebook._();
 
+  String? get AccessToken;
+  factory SignInFacebook([updates(SignInFacebookBuilder b)]) = _$SignInFacebook;
+}
+abstract class Switch_ForgotPasswordScreen extends LOginEvent
+    implements Built<Switch_ForgotPasswordScreen, Switch_ForgotPasswordScreenBuilder> {
+  Switch_ForgotPasswordScreen._();
 
-
-
+  bool? get Value;
+  factory Switch_ForgotPasswordScreen([updates(Switch_ForgotPasswordScreenBuilder b)]) = _$Switch_ForgotPasswordScreen;
+}
 

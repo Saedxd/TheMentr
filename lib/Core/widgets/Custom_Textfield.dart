@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:thementr/Core/theme/theme_constants.dart';
+import 'package:thementr/Core/Functions/Fucntions.dart';
+
 
 class textfeild extends StatefulWidget {
   String Hint_Text;
@@ -13,13 +12,17 @@ class textfeild extends StatefulWidget {
   final TextInputAction TextInputaction;
   final Function(String) Onchanged;
   final Function() IconClicked;
+  final Function() prefixIconClicked;
   final Function(String) Onsubmitted;
   final FocusNode FoucesNode;
   TextEditingController? Controller;
   String? Function(String?)?  validator;
   List<TextInputFormatter>? inputFormatters;
+  bool Want_Mic_Icon = false;
+  bool Want_prefixIconClicked = false;
   final Margin;
   TextStyle HintText_Style;
+  TextStyle Font_Style;
   int Hieght;
   int width;
   double? FontSize;
@@ -32,8 +35,16 @@ class textfeild extends StatefulWidget {
   double LeftContentPadding = 0;
   bool obscureText = false;
   TextAlign? textAlign;
+  TextInputType? type;
+  String BorderType = "";
   textfeild({
     required this.FillColor,
+    required this.prefixIconClicked,
+    required this.Want_prefixIconClicked,
+     required this.Want_Mic_Icon,
+    required this.BorderType,
+    required this.Font_Style,
+    required this.type,
     required this.BorderRaduis,
     required this.BorderColor,
     required this.HintText_Style,
@@ -87,41 +98,58 @@ class _State extends State<textfeild> {
         keyboardAppearance: Brightness.dark,
         textInputAction: widget.TextInputaction,
         controller: widget.Controller,
-        cursorHeight: 20.h,
+        cursorHeight: 26.h,
         onChanged: widget.Onchanged,
         onFieldSubmitted: widget.Onsubmitted,
-        validator:widget.validator,
+       validator:widget.validator,
         cursorColor: Colors.black,
         inputFormatters: widget.inputFormatters,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
 
-        style: TextStyle(
-            // fontSize: 15.sp,
-            // fontWeight: FontWeight.w500,
-            // height: 1.h,
-            // color: Colors.brown
-        ),
+        style: widget.Font_Style,
         decoration: InputDecoration(
+
+            helperText: ' ',
             errorStyle: TextStyle(
               color: Colors.red,
             ),
-            errorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:  Colors.red, width: 2.w),
-                borderRadius: BorderRadius.circular(widget.BorderRaduis.r)),
-            focusedErrorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.red,width: 2.w),
-                borderRadius: BorderRadius.circular(widget.BorderRaduis.r)),
-            border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: widget.BorderColor,width: 2.w),
-                                        borderRadius: BorderRadius.circular(widget.BorderRaduis.r)),
+            errorBorder:
+            widget.BorderType=="Outline"
+            ?OutlineBorderWidget(Colors.red,widget.BorderRaduis.r)
+                :UnderlineInputWidget(Colors.red, widget.BorderRaduis.r),
+
+            focusedErrorBorder:
+            widget.BorderType=="Outline"
+                ?OutlineBorderWidget(Colors.red,widget.BorderRaduis.r)
+                :UnderlineInputWidget(Colors.red, widget.BorderRaduis.r),
+
+            border:
+            widget.BorderType=="Outline"
+                ?OutlineBorderWidget( widget.BorderColor,widget.BorderRaduis.r)
+                :UnderlineInputWidget( widget.BorderColor, widget.BorderRaduis.r),
+
             counterText: ' ',
 
-            enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color:widget.BorderColor,width: 2.w),
-                borderRadius: BorderRadius.circular(widget.BorderRaduis.r)),
-            focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color:widget.BorderColor,width: 2.w),
-                            borderRadius: BorderRadius.circular(widget.BorderRaduis.r)),
-          suffixIcon: widget.hidePass?
+            enabledBorder:
+            widget.BorderType=="Outline"
+                ?OutlineBorderWidget( widget.BorderColor,widget.BorderRaduis.r)
+                :UnderlineInputWidget( widget.BorderColor, widget.BorderRaduis.r),
+            focusedBorder:
+            widget.BorderType=="Outline"
+                ?OutlineBorderWidget( widget.BorderColor,widget.BorderRaduis.r)
+                :UnderlineInputWidget( widget.BorderColor, widget.BorderRaduis.r),
+          suffixIcon:
+              widget.Want_Mic_Icon
+                  ?  IconButton(
+                icon: SvgPicture.asset("Assets/images/microphone-2.svg",
+                width: 24.w,
+                  height: 24.h,
+                ),
+                onPressed:widget.IconClicked,
+                color: Colors.black,
+              )
+                  :
+          widget.hidePass?
           IconButton(
             icon: Icon(
               // Based on passwordVisible state choose the icon
@@ -133,14 +161,23 @@ class _State extends State<textfeild> {
             onPressed:widget.IconClicked,
 
           ):null,
+            prefixIcon:widget.Want_prefixIconClicked? IconButton(
+              onPressed:(){
 
+              },
+              icon: SvgPicture.asset("Assets/images/search-normal.svg"),
+            ):null,
             filled: true,
             fillColor: widget.FillColor,
-            contentPadding: EdgeInsets.only(left: widget.LeftContentPadding.w, top: widget.topContentPadding.h),
+            contentPadding: EdgeInsets.only(
+                left: widget.LeftContentPadding.w,
+                top: widget.topContentPadding.h,
+              bottom: 22.h
+            ),
             hintText: widget.Hint_Text,
             hintStyle: widget.HintText_Style
         ),
-        keyboardType: TextInputType.text,
+        keyboardType: widget.type,
         obscureText: !widget.obscureText,
       ),
     );

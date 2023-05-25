@@ -36,12 +36,6 @@ void main() async {
     //   token: '93AmJho7YPNoLs3F5Oe3jPZHlxF7wjZ5',
     // );
     await ScreenUtil.ensureScreenSize();
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   const SystemUiOverlayStyle(
-    //       statusBarColor: Colors.black,
-    //       systemNavigationBarColor: Colors.black
-    //   ),
-    // );
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

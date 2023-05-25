@@ -25,6 +25,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:thementr/Data/prefs_helper/prefs_helper.dart';
+import 'package:thementr/UI/Auth/SignUp_Screen/pages/SignUp10.dart';
 import '../../../../core/theme/theme_constants.dart';
 import '../../Login_screen/pages/Login_Page.dart';
 
@@ -42,37 +43,16 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
   double? lat;
   double? lng;
   String? fcmToken;
-
   final bloc2 = sl<SignUpBloc>();
   ScrollController scrollController =  ScrollController();
-//Add Hobbles
-// Add Occupation
-// Add Education
-// Add Location
-// Add Birth Date
-// Add Years Of Experience
-// Add Fun Fact
-// Link to work portfolio
-  List<String> Skills_List =[
-    "Add Hobbles",
-    "Add Occupation",
-    "Add Education",
-    "Add Location",
-    "Add Birth Date",
-    "Add Years Of Experience"
-    ,"Add Fun Fact"
-    ,"Link to work portfolio"
-  ];
-  List<String> SkillsImage_List =[
-    "Assets/images/Vector.svg",
-    "Assets/images/Vector2.svg",
-    "Assets/images/Vector3.svg",
-    "Assets/images/Vector4.svg",
-    "Assets/images/Vector6.svg",
-    "Assets/images/Vector11.svg",
-    "Assets/images/Vector12.svg",
-    "Assets/images/location.svg"
-  ];
+
+
+  @override
+  void initState() {
+    bloc2.add(AddSkill_List());
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,18 +74,7 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                     height: h,
                     child: Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 136.h),
-                          child: Center(
-                            child: Text(
-                              'TheMentr',
-                              style: Font1.copyWith(
-                                  fontSize: 32.sp,
-                                  color: Color(0xff015595)
-                              ),
-                            ),
-                          ),
-                        ),
+                        AppLogoTitle(),
                         Container(
                           child: Column(
                             children: [
@@ -127,7 +96,7 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                               Container(
                                 width: w,
                                 margin: EdgeInsets.only(top: 22.h,left: 18.w,bottom: 16.h),
-                                child:  Container(
+                                child:Container(
                                   child: Text(
                                     'Mentor’s Information',
                                     textAlign: TextAlign.left,
@@ -139,9 +108,9 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                                   ),
                                 ),
                               ),
-                              Container(
+                              !state.isLoading!?state.Skill_List!.length!=0?Container(
                                   width: w,
-                                  height: 473.h,
+                                  height: 420.h,
                                   margin: EdgeInsets.only(left: 14.w,right: 18.w),
                                   child:ScrollConfiguration(
                                     behavior: MyBehavior(),
@@ -151,34 +120,77 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                                       padding: EdgeInsets.zero,
                                       physics: AlwaysScrollableScrollPhysics(),
                                       scrollDirection: Axis.vertical,
-                                      itemCount: Skills_List.length,
+                                      itemCount: state.Skill_List!.length,
                                       itemBuilder: (BuildContext context, int index) {
                                         return
-                                          RemoveHighlight(      InkWell(
+                                          RemoveHighlight(InkWell(
                                             onTap: (){
-                                           //   bloc2.add(SelectItemInList((b) => b..Index = index));
+                                              WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => SignUp10(state.Skill_List![index],
+                                                      state.Skill_List![index].Screen_type=="Add Occupation"?true:false
+                                                  ),
+                                                ),
+                                              ).then((value) {
+                                                if (value=="No"){
+                                                  bloc2.add(MentorInfoStatusChange((b) => b
+                                                    ..Index = index
+                                                    ..value = false
+                                                  ));
+                                                }else if (value=="Yes"){
+                                                  bloc2.add(MentorInfoStatusChange((b) => b
+                                                    ..Index = index
+                                                    ..value = true
+                                                  ));
+                                                }
+                                              }));
                                             },
                                             child: Container(
                                               width: 396.w,
-                                              height: 46.h,
+                                              height: 56.h,
                                               decoration: BoxDecoration(
-                                                borderRadius : border(25,25,25,25),
-                                                color :Color.fromRGBO(245, 245, 245, 1)),
-                                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 13.h),
+                                                  borderRadius : border(25,25,25,25),
+                                                  border : Border.all(
+                                                    color:!state.isLoading!
+                                                        ?state.MentorInfoListAdded![index]
+                                                        ?Colors.transparent
+                                                        :  state.ValidateSkill_List! ?Color(0xffFF3B30) :Colors.transparent
+                                                        :Colors.transparent,
+
+                                                    width: 1.w,
+                                                  ),
+                                                  color :Color(0xffCEEAFF)
+                                              ),
+                                              padding: EdgeInsets.symmetric(horizontal: 12.w),
                                               child:Container(
                                                 child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    SvgPicture.asset(SkillsImage_List[index],color: Color(0xff646464),),
-                                                    SizedBox(width: 15.w,),
-                                                    Text(
-                                                      Skills_List[index],
-                                                      textAlign: TextAlign.left,
-                                                      style: Font1.copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w400,
-                                                          color: Color(0xff646464)
-                                                      ),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset(state.Skill_List![index].Skill_Image
+                                                          ,color: Color(0xff646464),),
+                                                        SizedBox(width: 15.w,),
+                                                        Container(
+                                                          padding: EdgeInsets.only(top: 5.h),
+                                                          child: Text(
+                                                            state.Skill_List![index].Screen_type,
+                                                            textAlign: TextAlign.left,
+                                                            style: Font1.copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: Color(0xff646464)
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
+                                                    !state.isLoading!?state.MentorInfoListAdded![index]?
+                                                    Container(
+                                                        width: 20.h,
+                                                        height: 20.h,
+                                                        child: SvgPicture.asset("Assets/images/tick-circle.svg")):Container():Container(),
                                                   ],
                                                 ),
                                               ),
@@ -188,41 +200,29 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                                       return SizedBox(height: 16.h,);
                                     },
                                     ),)
-                              ),
-                              // RemoveHighlight(      Center(child: InkWell(
-                              //   onTap: (){
-                              //     scrollController.animateTo(
-                              //       scrollController.position.maxScrollExtent,
-                              //       duration: Duration( milliseconds: 400),
-                              //       curve: Curves.easeIn,
-                              //     );
-                              //   },
-                              //   child: Container(
-                              //     margin: EdgeInsets.only(top: 16.h),
-                              //     child: CircleAvatar(
-                              //       radius: 25.r,
-                              //       backgroundColor: Color(0xff077BCD),
-                              //       child: CircleAvatar(
-                              //         radius: 23.5.r,
-                              //         backgroundColor: Colors.white,
-                              //         child: Icon(
-                              //           Icons.keyboard_arrow_down,
-                              //           color: Colors.black,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )),),
+                              ):Container():Container(),
                               Container(
-                                margin: EdgeInsets.only(top: 42.h),
+                                margin: EdgeInsets.only(top: 104.h),
                                 child: CustomButton(
-                                  onPressed: () async {
-                                    WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Container(),
-                                      ),
-                                    ));
+                                  onPressed:()async{
+                                    int Count = 0;
+                                    bloc2.add(ValidateSkill_List());
+                                    for(int i =0;i<state.MentorInfoListAdded!.length;i++){
+                                      if (state.MentorInfoListAdded![i]==false){
+                                        Count = 5;
+                                      }
+                                    }
+
+                                    if (Count==0) {
+                                      print(Hobbies);
+                                      print(Work_Links);
+                                      print(Y_OF_Experience);
+                                      print(CountryValue);
+                                      print(CityValue);
+                                      print(occupation);
+                                      print(BirthDay);
+                                      // PushNavigator(context,Container());
+                                    }
                                   },
                                   ButtonText: 'Next',
                                   btnColor: Color(0xff015595),
@@ -232,267 +232,12 @@ class _SignUp9State extends State<SignUp9> with WidgetsBindingObserver {
                                   fontsize: 20.sp,
                                   HeigthBTN: 56.h,
                                   Widthbtn: 393.w, BorderColor:  Color(0xff015595),
-
                                 ),
                               ),
 
                             ],
                           ),
                         )
-                        // Container(
-                        //   width: w / 1.32,
-                        //   child: AspectRatio(
-                        //     aspectRatio: 50 / 10,
-                        //     //aspect ratio for Image
-                        //     child: SvgPicture.asset(
-                        //         "Assets/images/Logo.svg",
-                        //         fit: BoxFit.fill),
-                        //   ),
-                        // ),
-                        // SizedBox(height: 80.h,),
-
-                        // Container(
-                        //   width: w / 1.4,
-                        //   margin: EdgeInsets.only(top: 45.h),
-                        //   child: AspectRatio(
-                        //     aspectRatio: 50 / 16,
-                        //     //aspect ratio for Image
-                        //     child:
-                        //     Image.asset("Assets/images/image.png" ,  fit: BoxFit.fill),
-                        //   ),
-                        // ),
-
-                        // Container(
-                        //   width: w / 1.2,
-                        //   margin: EdgeInsets.only(top: 38.h),
-                        //   child: Text(
-                        //     '   Be around,              Find your bubble!',
-                        //     textAlign: TextAlign.center,
-                        //     style: TextStyle(
-                        //         color:
-                        //             Color.fromRGBO(255, 255, 255, 1),
-                        //         fontFamily: 'Red Hat Display',
-                        //         fontSize: 28.sp,
-                        //         letterSpacing: 0.2,
-                        //         fontStyle: FontStyle.italic,
-                        //         fontWeight: FontWeight.w800,
-                        //         height: 0.8.h),
-                        //   ),
-                        // ),
-                        // Form(
-                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                        //   key: _formkey1,
-                        //   child:
-                        //   textfeild(
-                        //     FontSize: 20,
-                        //     hidePass: false,
-                        //     FillColor: Colors.white,
-                        //     weidth: 1.32,
-                        //     topContentPadding: 0,
-                        //     MaxLines: 1,
-                        //     Height: 10,
-                        //     Margin: 25,
-                        //     FoucesNode:_EmailFocusNode,
-                        //     Onsubmitted: (String){},
-                        //     TextInputaction: TextInputAction.next,
-                        //     Controller: _FnameController, Hint_Text: "Email",
-                        //     Onchanged:(String){},
-                        //     validator: MultiValidator([
-                        //       RequiredValidator(errorText: "Required"),
-                        //       EmailValidator(errorText: "Thats not an email"),
-                        //     ]),
-                        //   ),),
-                        // Container(
-                        //   width: w/1.35,
-                        //   margin: EdgeInsets.only(bottom: 10.h,top: 20.h),
-                        //   child: InternationalPhoneNumberInput(
-                        //     onInputChanged: (PhoneNumber number) {
-                        //       print(number.phoneNumber);
-                        //       numberr = number.phoneNumber.toString();
-                        //     },
-                        //     onInputValidated: (bool value) {
-                        //       print(value);
-                        //     },
-                        //     selectorConfig: SelectorConfig(
-                        //       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                        //     ),
-                        //     ignoreBlank: false,
-                        //     autoValidateMode: AutovalidateMode.disabled,
-                        //     selectorTextStyle: TextStyle(color: Color(0xffEAEAEA)),
-                        //     initialValue: number,
-                        //     textFieldController: controller,
-                        //     formatInput: false,
-                        //     keyboardType:  TextInputType.numberWithOptions(signed: true, decimal: true),
-                        //
-                        //     onSaved: (PhoneNumber number) {
-                        //       print('On Saved: $number');
-                        //     },
-                        //     hintText: "Phone number",
-                        //   ),
-                        // ),
-
-                        //
-                        //  CustomButton(
-                        //    onPressed: ()async{
-                        //    // if (numberr.isNotEmpty)
-                        //    //     WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                        //    //           context,
-                        //    //           MaterialPageRoute(
-                        //    //             builder: (context) => OtpScreen(number: numberr,),
-                        //    //           ),
-                        //    //         ));
-                        //   //     Verify();
-                        //      bool result =await InternetConnectionChecker().hasConnection;
-                        //      if (result == true) {
-                        //        // if (_formkey1.currentState! .validate()) {
-                        //        //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                        //        //     context,
-                        //        //     MaterialPageRoute(
-                        //        //       builder: (context) => Login2(Email: _FnameController.text,),
-                        //        //     ),
-                        //        //   ));
-                        //        // }
-                        //      } else {
-                        //        AnimatedSnackBar.material(
-                        //          'Check your internet connection',
-                        //          duration: Duration(seconds: 2),
-                        //          type: AnimatedSnackBarType.error,
-                        //        ).show(
-                        //          context,
-                        //        );
-                        //      }
-                        //    },
-                        //    ButtonText: 'Continue',
-                        //    btnColor: Color(0xffCF6D38),
-                        //    TxtColor: Color(0xffFFFFFF),
-                        //    SocialName: 'null',
-                        //    weight: FontWeight.w600,
-                        //    fontsize: 13.86.sp,
-                        //  ),
-                        //  Container(
-                        //    width: w,
-                        //    margin:  EdgeInsets.only(top: 8.h, bottom: 8.h),
-                        //    child: Center(
-                        //        child: Text(
-                        //          'or',
-                        //          textAlign: TextAlign.center,
-                        //          style: TextStyle(
-                        //              color:  Colors.white,
-                        //              fontFamily: 'Red Hat Text',
-                        //              fontSize: 16.sp,
-                        //              letterSpacing: 0,
-                        //              fontWeight: FontWeight.w600,
-                        //              height: 1.1875.h),
-                        //        )),
-                        //  ),
-                        //  // CustomButton(
-                        //  //   onPressed: ()async{ signInWithFacebook(); },
-                        //  //   ButtonText: 'Continue with Facebook',
-                        //  //   btnColor: Color(0xff1877F2),
-                        //  //   TxtColor: Colors.white,
-                        //  //   SocialName: 'signInWithFacebook',
-                        //  //   SocialImage: "Assets/images/path14.svg",
-                        //  //   FontFamilySocial: 'Helvetica',
-                        //  //   weight: FontWeight.w700,
-                        //  //   fontsize: 13.86.sp,
-                        //  // ),
-                        //  // SizedBox(height: 7.h,),
-                        //  // CustomButton(
-                        //  //   onPressed: ()async{
-                        //  //  //   signInWithGoogle(context: context);
-                        //  //     },
-                        //  //   ButtonText: 'Continue with Google',
-                        //  //   btnColor: Colors.white,
-                        //  //   TxtColor: Color.fromRGBO(0, 0, 0, 0.5400000214576721),
-                        //  //   SocialName: 'signInWithGoogle',
-                        //  //   SocialImage:"Assets/images/Google Logo.svg" ,
-                        //  //   FontFamilySocial: 'Roboto Medium',
-                        //  //   weight: FontWeight.w500,
-                        //  //   fontsize: 13.86.sp,
-                        //  // ),
-                        //
-                        //
-                        //  SizedBox(height: 7.h,),
-                        // // Platform.isIOS?
-                        // //  CustomButton(
-                        // //    onPressed: ()async{   signInWithApple();},
-                        // //    ButtonText: 'Continue with Apple',
-                        // //    btnColor: Colors.black,
-                        // //    TxtColor: Colors.white,
-                        // //    SocialName: 'SigninWIthApple',
-                        // //    SocialImage: "Assets/images/path4.svg",
-                        // //    FontFamilySocial: 'Roboto',
-                        // //    weight: FontWeight.w500,
-                        // //    fontsize: 13.86.sp,
-                        // //  )
-                        // //       :Container(),
-                        //  //    Container(
-                        //  //      width: w/1.4,
-                        //  //      margin: EdgeInsets.only(top:!Platform.isIOS?40.h: 10.h),
-                        //  //      child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quam scelerisque donec varius.',
-                        //  //        textAlign: TextAlign.center, style: TextStyle(
-                        //  //       color: Color(0xffEAEAEA),
-                        //  //       fontFamily: 'Red Hat Text',
-                        //  //       fontSize: 11.sp,
-                        //  //       fontWeight: FontWeight.w300,
-                        //  //       height: 1.3636363636363635.h
-                        //  // ),),
-                        //  //    )
-                        //  Container(
-                        //    margin: EdgeInsets.only(top: h/50),
-                        //    child: InkWell(
-                        //      onTap: () async {
-                        //        bool result = await InternetConnectionChecker().hasConnection;
-                        //        if (result == true) {
-                        //          WidgetsBinding.instance
-                        //              .addPostFrameCallback(
-                        //                  (_) => Navigator.push(
-                        //                context,
-                        //                MaterialPageRoute(
-                        //                  builder: (context) =>
-                        //                      SignUp(),
-                        //                ),
-                        //              ));
-                        //        } else {
-                        //          AnimatedSnackBar.material(
-                        //            'Check your internet connection',
-                        //            duration: Duration(seconds: 2),
-                        //            type: AnimatedSnackBarType.error,
-                        //          ).show(
-                        //            context,
-                        //          );
-                        //          // CommingSoonPopup(context,
-                        //          //     "Check your internet connection then try again", "Ok", 17);
-                        //        }
-                        //      },
-                        //      child: Column(
-                        //        mainAxisAlignment:
-                        //        MainAxisAlignment.start,
-                        //        children: [
-                        //          Text('Don’t have an account?',
-                        //              textAlign: TextAlign.center,
-                        //              style: _TextTheme.headline1!
-                        //                  .copyWith(
-                        //                  fontSize: 14.sp,
-                        //                  letterSpacing: 0.3,
-                        //                  fontWeight:
-                        //                  FontWeight.w300,
-                        //                  height: 1)),
-                        //          Text("Sign up",
-                        //              textAlign: TextAlign.center,
-                        //              style: _TextTheme.headline1!
-                        //                  .copyWith(
-                        //                  decoration: TextDecoration
-                        //                      .underline,
-                        //                  fontSize: 9.sp,
-                        //                  letterSpacing: 0.3,
-                        //                  fontWeight:
-                        //                  FontWeight.w500,
-                        //                  height: 1)),
-                        //        ],
-                        //      ),
-                        //    ),
-                        //  ),
                       ],
                     ),
                   ),

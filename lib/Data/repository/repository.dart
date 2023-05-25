@@ -1,7 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:thementr/models/GetNewsModel/GetNewsModel.dart';
+
+import 'package:thementr/models/GetAllCountriesModel/GetAllCountriesModel.dart';
+import 'package:thementr/models/GetInterestsModel/GetInterestsModel.dart';
+import 'package:thementr/models/GetOccupation/GetOccupationModel.dart';
+import 'package:thementr/models/GetRolesModel/GetRolesModel.dart';
+import 'package:thementr/models/GetSkillsModel/GetSkillsModel.dart';
+import 'package:thementr/models/OtpForResetPasswordModel/OtpForResetPasswordModel.dart';
+import 'package:thementr/models/ResendOtpModel/ResendOtpModel.dart';
+import 'package:thementr/models/ResetPasswordModel/ResetPasswordModel.dart';
+import 'package:thementr/models/UserDataModel/UserDataModel.dart';
+import 'package:thementr/models/UserProfileModel/UserProfileModel.dart';
+import 'package:thementr/models/ValidateOTPModel/ValidateOTPModel.dart';
+import 'package:thementr/models/VerifyUserModel/VerifyUserModel.dart';
+import 'package:thementr/models/UserDataModel/UserDataModel.dart';
 
 import '../http_helper/Ihttp_helper.dart';
 import '../prefs_helper/iprefs_helper.dart';
@@ -14,71 +27,97 @@ class Repository implements IRepository {
   Repository(this._ihttpHelper, this._iprefHelper);
 
 
-  Future<GetNewsModel> GetNews(String Country,String category)async{
-    final Data = await _ihttpHelper.GetNews(Country, category);
+  @override
+  Future<UserDataModel> Login(String Email,String Password)async{
+    final Data = await _ihttpHelper.Login(Email, Password);
     return Data;
   }
 
-  // Future<UserData> GoogleLogin(
-  //     String Email,
-  //     String name,
-  //     String fcmToken,
-  //     String avatar,
-  //     )async{
-  //   final Data = await _ihttpHelper.GoogleLogin(Email, name, fcmToken, avatar);
-  //
-  //   return Data;
-  // }
-  
+  @override
+  Future<UserDataModel> SignUp(String Email,String Password,String firstName,String lastName)async{
+    final Data = await _ihttpHelper.SignUp(Email, Password, firstName, lastName);
+    return Data;
+  }
 
-  // Future<UserData> LoginSocial(String Token,String fcmToken,) async {
-  //   // String auth = await _iprefHelper.getToken();
-  //   // print(auth);
-  // //  final Data = await _ihttpHelper.LoginSocial(Token, fcmToken);
-  //
-  //   return Data;
-  // }
-  // Future<GetUrlDataModel> GetUrls()async{
-  //   final Data = await _ihttpHelper.GetUrls();
-  //   return Data;
-  // }
-  //
-  // Future<PostsData> GetPosts()async{
-  //   final Data = await _ihttpHelper.GetPosts();
-  //   return Data;
-  // }
-  //
-  // Future<AdminDataModel> GetAdmins()async{
-  //   final Data = await _ihttpHelper.GetAdmins();
-  //   return Data;
-  // }
-  // Future<SendMessageModel> SendMessage(
-  //     String name,
-  //     String Email,
-  //     String title,
-  //     String body
-  //     )async{
-  //   final Data = await _ihttpHelper.SendMessage(name, Email, title, body);
-  //   return Data;
-  // }
-  // Future<AddVolModel> AddVol(
-  //     String gender,
-  //     String uni_sp,
-  //     String area,
-  //     String street,
-  //     String phone,
-  //     String email,
-  //     String note,
-  //     String full_name,
-  //     String old,
-  //     String noid,
-  //     )async{
-  //   final Data = await _ihttpHelper.AddVol(gender, uni_sp, area, street, phone, email, note, full_name, old, noid);
-  //   return Data;
-  // }
-// Future<UserDataModel> Login(String Email,String Password,String fcmToken,) async {
-// //  final Data = await _ihttpHelper.Login(Email, Password, fcmToken);
-// //
-// //   return Data;
-// // }
+  @override
+  Future<UserDataModel> SignInGoogle(String Email,String ProfileImage,String firstName,String lastName)async{
+    final Data = await _ihttpHelper.SignInGoogle(Email, ProfileImage, firstName, lastName);
+    return Data;
+  }
+
+  @override
+  Future<UserDataModel> SignInFacebook(String Token)async{
+    final Data = await _ihttpHelper.SignInFacebook(Token);
+    return Data;
+  }
+
+  @override
+  Future<GetInterestsModel> GetInterest()async{
+    final Data = await _ihttpHelper.GetInterest();
+    return Data;
+  }
+
+
+  @override
+  Future<ResendOtpModel> ReSendOTP(String Email)async{
+    final Data = await _ihttpHelper.ReSendOTP(Email);
+    return Data;
+  }
+
+
+  @override
+  Future<ResetPasswordModel> ResetPassword(String Email,String Password)async{
+    final Data = await _ihttpHelper.ResetPassword(Email, Password);
+    return Data;
+  }
+
+  @override
+  Future<OtpForResetPasswordModel> SendOtpForResetPassword(String Email)async{
+    final Data = await _ihttpHelper.SendOtpForResetPassword(Email);
+    return Data;
+  }
+
+  @override
+  Future<VerifyUserModel> VerifyEmail(String Email,String otp)async{
+    final Data = await _ihttpHelper.VerifyEmail(Email, otp);
+    return Data;
+  }
+
+  @override
+  Future<GetSkillsModel> GetSkills(String InterestValue)async{
+    final Data = await _ihttpHelper.GetSkills(InterestValue);
+    return Data;
+  }
+
+
+  @override
+  Future<UserProfileModel> GetProfile(String Auth)async{
+    final Data = await _ihttpHelper.GetProfile(Auth);
+    return Data;
+  }
+
+
+  @override
+  Future<GetRolesModel> GetRoles()async{
+    final Data = await _ihttpHelper.GetRoles();
+    return Data;
+  }
+  @override
+  Future<GetOccupationModel> GetOccupations(String Keyword)async{
+    final Data = await _ihttpHelper.GetOccupations(Keyword);
+    return Data;
+  }
+
+  @override
+  Future<GetAllCountriesModel> GetAllCountries()async{
+    final Data = await _ihttpHelper.GetAllCountries();
+    return Data;
+  }
+
+  @override
+  Future<ValidateOTPModel> ValidateOTP(String Email,int otp)async{
+    final Data = await _ihttpHelper.ValidateOTP(Email, otp);
+    return Data;
+  }
+
 }

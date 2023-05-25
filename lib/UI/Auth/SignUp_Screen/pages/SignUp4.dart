@@ -5,10 +5,12 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:thementr/App/app.dart';
 import 'package:thementr/Core/Functions/Fucntions.dart';
+import 'package:thementr/Core/constants/strings.dart';
 import 'package:thementr/Core/widgets/CustomButton.dart';
 import 'package:thementr/Core/widgets/Custom_Textfield.dart';
 import 'package:thementr/Data/prefs_helper/prefs_helper.dart';
 import 'package:thementr/Injection.dart';
+import 'package:thementr/UI/Auth/Login_screen/bloc/login_event.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/bloc/SignUp_bloc.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/bloc/SignUp_event.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/bloc/SignUp_state.dart';
@@ -27,10 +29,13 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:thementr/Data/prefs_helper/prefs_helper.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/pages/SignUp5.dart';
 import 'package:thementr/UI/Auth/SignUp_Screen/pages/SignUp8.dart';
+import '../../../../Core/Classes/Classes.dart';
 import '../../../../core/theme/theme_constants.dart';
 import '../../Login_screen/pages/Login_Page.dart';
 
 class SignUp4 extends StatefulWidget {
+  user? User;
+  SignUp4(this.User);
   @override
   _SignUp4State createState() => _SignUp4State();
 }
@@ -51,13 +56,16 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    bloc2.add(ChangeInterestValue((b) => b..value=InterestArea_List[0]));
-    bloc2.add(ChangeRoleValue((b) => b..value=Role_List[0]));
+    bloc2.add(GetInterests());
+    bloc2.add(GetRoles());
+
+    // bloc2.add(ChangeInterestValue((b) => b..value=InterestArea_List[0]));
+    // bloc2.add(ChangeRoleValue((b) => b..value=Role_List[0]));
     super.initState();
 
   }
-  List<String> Role_List = ["Mentee","Mentor"];
-  List<String> InterestArea_List = ["Health Science","Technology"];
+  // List<String> Role_List = ["Mentee","Mentor"];
+  // List<String> InterestArea_List = ["Health Science","Technology"];
 
 
 
@@ -83,23 +91,13 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                     height: h,
                     child: Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 136.h),
-                          child: Center(
-                            child: Text(
-                              'TheMentr',
-                              style: Font1.copyWith(
-                                fontSize: 32.sp,
-                                  color: Color(0xff015595)
-                              ),
-                            ),
-                          ),
-                        ),
-
+                        AppLogoTitle(),
                         Container(
                           child: Column(
                             children: [
-
+                              state.success!
+                                  ?Column(
+                            children: [
                               Row(
                                 children: [
                                   Container(
@@ -120,21 +118,19 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton2(
                                     isExpanded: true,
-                                    items: Role_List
+                                    items: state.Roles_Values!
                                         .map((item) => DropdownMenuItem<String>(
                                         value: item,
                                         child:
-                                        //state.EventCateogorySuccess! && !Diditonce2?
                                         Text(
                                           item,
                                           style:Font1.copyWith(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
-                                            color: Color(0xff2B2B2B)
+                                            color: DarkColor,
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                         )
-                                      //:Text("")
                                     ))
                                         .toList(),
                                     value: state.SelectedRoleValue!.isNotEmpty? state.SelectedRoleValue:null,
@@ -155,7 +151,7 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                     buttonDecoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4.r),
                                       border: Border.all(
-                                        color: Color(0xff2B2B2B),
+                                        color: DarkColor,
                                       ),
                                       color: Colors.white,
                                     ),
@@ -164,8 +160,8 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                     dropdownMaxHeight: 170.h,
                                     dropdownWidth:396.w,
                                     dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      color: Colors.white
+                                        borderRadius: BorderRadius.circular(4.r),
+                                        color: Colors.white
                                     ),
                                     dropdownElevation: 8,
                                     scrollbarRadius:  Radius.circular(2.r),
@@ -194,17 +190,15 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton2(
                                     isExpanded: true,
-                                    items: InterestArea_List
+                                    items: state.Interest_VaLues!
                                         .map((item) => DropdownMenuItem<String>(
-                                        value: item,
+                                        value:item,
                                         child:
-                                        //state.EventCateogorySuccess! && !Diditonce2?
-                                        Text(
-                                          item,
+                                        Text( item,
                                           style:Font1.copyWith(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xff2B2B2B)
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: DarkColor,
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                         )
@@ -230,7 +224,7 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                     buttonDecoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4.r),
                                       border: Border.all(
-                                        color: Color(0xff2B2B2B),
+                                        color: DarkColor,
                                       ),
                                       color: Colors.white,
                                     ),
@@ -249,67 +243,25 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
                                   ),
                                 ),
                               ),
-
-
-
+                            ],
+                          )
+                                  :Container(
+                                width: w,
+                                height: 250.h,
+                                child: state.isLoading == true
+                                    ? Center(child: listLoader(context: context)):Container(),
+                              ),
                               Container(
                                 margin: EdgeInsets.only(top: 22.h),
                                 child: CustomButton(
-                                  onPressed: () async {
-
-                                    if (state.SelectedRoleValue=="Mentor")
-                                    WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SignUp8(),
-                                      ),
-                                    ));
+                                  onPressed:()async{
+                                    widget.User!.Role= state.SelectedRoleValue!;
+                                    widget.User!.AreaOF_Interest = state.SelectedInterestValue!;
+                                    if (state.SelectedRoleValue!.toLowerCase()=="mentor")
+                                      PushNavigator(context,SignUp8(widget.User!,state.SelectedInterestValue!));
                                     else{
-                                      WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SignUp5(),
-                                        ),
-                                      ));
+                                      PushNavigator(context,SignUp5(widget.User!,state.SelectedInterestValue!));
                                     }
-                                    // if (state.Pageindex==2){
-                                    //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) => Login(),
-                                    //     ),
-                                    //   ));
-                                    // }
-                                    // if (state.Pageindex! != 2){
-                                    //   _SliderBloc.add(ChangePageIndex(((b) => b..index = state.Pageindex! +1)));
-                                    //   _pageController.animateToPage(
-                                    //     state.Pageindex ! + 1,
-                                    //     duration: Duration(milliseconds: 700),
-                                    //     curve: Curves.easeIn,
-                                    //   );
-                                    // }
-
-
-
-                                    // bool result =await InternetConnectionChecker().hasConnection;
-                                    // if (result == true) {
-                                    //   // if (_formkey1.currentState! .validate()) {
-                                    //   //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                    //   //     context,
-                                    //   //     MaterialPageRoute(
-                                    //   //       builder: (context) => Login2(Email: _EmailController.text,),
-                                    //   //     ),
-                                    //   //   ));
-                                    //   // }
-                                    // } else {
-                                    //   AnimatedSnackBar.material(
-                                    //     'Check your internet connection',
-                                    //     duration: Duration(seconds: 2),
-                                    //     type: AnimatedSnackBarType.error,
-                                    //   ).show(
-                                    //     context,
-                                    //   );
-                                    // }
                                   },
                                   ButtonText: 'Continue',
                                   btnColor: Color(0xff015595),
@@ -322,271 +274,12 @@ class _SignUp4State extends State<SignUp4> with WidgetsBindingObserver {
 
                                 ),
                               ),
-
                             ],
                           ),
                         )
-                        // Container(
-                        //   width: w / 1.32,
-                        //   child: AspectRatio(
-                        //     aspectRatio: 50 / 10,
-                        //     //aspect ratio for Image
-                        //     child: SvgPicture.asset(
-                        //         "Assets/images/Logo.svg",
-                        //         fit: BoxFit.fill),
-                        //   ),
-                        // ),
-                        // SizedBox(height: 80.h,),
-
-                        // Container(
-                        //   width: w / 1.4,
-                        //   margin: EdgeInsets.only(top: 45.h),
-                        //   child: AspectRatio(
-                        //     aspectRatio: 50 / 16,
-                        //     //aspect ratio for Image
-                        //     child:
-                        //     Image.asset("Assets/images/image.png" ,  fit: BoxFit.fill),
-                        //   ),
-                        // ),
-
-                        // Container(
-                        //   width: w / 1.2,
-                        //   margin: EdgeInsets.only(top: 38.h),
-                        //   child: Text(
-                        //     '   Be around,              Find your bubble!',
-                        //     textAlign: TextAlign.center,
-                        //     style: TextStyle(
-                        //         color:
-                        //             Color.fromRGBO(255, 255, 255, 1),
-                        //         fontFamily: 'Red Hat Display',
-                        //         fontSize: 28.sp,
-                        //         letterSpacing: 0.2,
-                        //         fontStyle: FontStyle.italic,
-                        //         fontWeight: FontWeight.w800,
-                        //         height: 0.8.h),
-                        //   ),
-                        // ),
-                        // Form(
-                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                        //   key: _formkey1,
-                        //   child:
-                        //   textfeild(
-                        //     FontSize: 20,
-                        //     hidePass: false,
-                        //     FillColor: Colors.white,
-                        //     weidth: 1.32,
-                        //     topContentPadding: 0,
-                        //     MaxLines: 1,
-                        //     Height: 10,
-                        //     Margin: 25,
-                        //     FoucesNode:_EmailFocusNode,
-                        //     Onsubmitted: (String){},
-                        //     TextInputaction: TextInputAction.next,
-                        //     Controller: _FnameController, Hint_Text: "Email",
-                        //     Onchanged:(String){},
-                        //     validator: MultiValidator([
-                        //       RequiredValidator(errorText: "Required"),
-                        //       EmailValidator(errorText: "Thats not an email"),
-                        //     ]),
-                        //   ),),
-                        // Container(
-                        //   width: w/1.35,
-                        //   margin: EdgeInsets.only(bottom: 10.h,top: 20.h),
-                        //   child: InternationalPhoneNumberInput(
-                        //     onInputChanged: (PhoneNumber number) {
-                        //       print(number.phoneNumber);
-                        //       numberr = number.phoneNumber.toString();
-                        //     },
-                        //     onInputValidated: (bool value) {
-                        //       print(value);
-                        //     },
-                        //     selectorConfig: SelectorConfig(
-                        //       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                        //     ),
-                        //     ignoreBlank: false,
-                        //     autoValidateMode: AutovalidateMode.disabled,
-                        //     selectorTextStyle: TextStyle(color: Color(0xffEAEAEA)),
-                        //     initialValue: number,
-                        //     textFieldController: controller,
-                        //     formatInput: false,
-                        //     keyboardType:  TextInputType.numberWithOptions(signed: true, decimal: true),
-                        //
-                        //     onSaved: (PhoneNumber number) {
-                        //       print('On Saved: $number');
-                        //     },
-                        //     hintText: "Phone number",
-                        //   ),
-                        // ),
-
-                        //
-                        //  CustomButton(
-                        //    onPressed: ()async{
-                        //    // if (numberr.isNotEmpty)
-                        //    //     WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                        //    //           context,
-                        //    //           MaterialPageRoute(
-                        //    //             builder: (context) => OtpScreen(number: numberr,),
-                        //    //           ),
-                        //    //         ));
-                        //   //     Verify();
-                        //      bool result =await InternetConnectionChecker().hasConnection;
-                        //      if (result == true) {
-                        //        // if (_formkey1.currentState! .validate()) {
-                        //        //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                        //        //     context,
-                        //        //     MaterialPageRoute(
-                        //        //       builder: (context) => Login2(Email: _FnameController.text,),
-                        //        //     ),
-                        //        //   ));
-                        //        // }
-                        //      } else {
-                        //        AnimatedSnackBar.material(
-                        //          'Check your internet connection',
-                        //          duration: Duration(seconds: 2),
-                        //          type: AnimatedSnackBarType.error,
-                        //        ).show(
-                        //          context,
-                        //        );
-                        //      }
-                        //    },
-                        //    ButtonText: 'Continue',
-                        //    btnColor: Color(0xffCF6D38),
-                        //    TxtColor: Color(0xffFFFFFF),
-                        //    SocialName: 'null',
-                        //    weight: FontWeight.w600,
-                        //    fontsize: 13.86.sp,
-                        //  ),
-                        //  Container(
-                        //    width: w,
-                        //    margin:  EdgeInsets.only(top: 8.h, bottom: 8.h),
-                        //    child: Center(
-                        //        child: Text(
-                        //          'or',
-                        //          textAlign: TextAlign.center,
-                        //          style: TextStyle(
-                        //              color:  Colors.white,
-                        //              fontFamily: 'Red Hat Text',
-                        //              fontSize: 16.sp,
-                        //              letterSpacing: 0,
-                        //              fontWeight: FontWeight.w600,
-                        //              height: 1.1875.h),
-                        //        )),
-                        //  ),
-                        //  // CustomButton(
-                        //  //   onPressed: ()async{ signInWithFacebook(); },
-                        //  //   ButtonText: 'Continue with Facebook',
-                        //  //   btnColor: Color(0xff1877F2),
-                        //  //   TxtColor: Colors.white,
-                        //  //   SocialName: 'signInWithFacebook',
-                        //  //   SocialImage: "Assets/images/path14.svg",
-                        //  //   FontFamilySocial: 'Helvetica',
-                        //  //   weight: FontWeight.w700,
-                        //  //   fontsize: 13.86.sp,
-                        //  // ),
-                        //  // SizedBox(height: 7.h,),
-                        //  // CustomButton(
-                        //  //   onPressed: ()async{
-                        //  //  //   signInWithGoogle(context: context);
-                        //  //     },
-                        //  //   ButtonText: 'Continue with Google',
-                        //  //   btnColor: Colors.white,
-                        //  //   TxtColor: Color.fromRGBO(0, 0, 0, 0.5400000214576721),
-                        //  //   SocialName: 'signInWithGoogle',
-                        //  //   SocialImage:"Assets/images/Google Logo.svg" ,
-                        //  //   FontFamilySocial: 'Roboto Medium',
-                        //  //   weight: FontWeight.w500,
-                        //  //   fontsize: 13.86.sp,
-                        //  // ),
-                        //
-                        //
-                        //  SizedBox(height: 7.h,),
-                        // // Platform.isIOS?
-                        // //  CustomButton(
-                        // //    onPressed: ()async{   signInWithApple();},
-                        // //    ButtonText: 'Continue with Apple',
-                        // //    btnColor: Colors.black,
-                        // //    TxtColor: Colors.white,
-                        // //    SocialName: 'SigninWIthApple',
-                        // //    SocialImage: "Assets/images/path4.svg",
-                        // //    FontFamilySocial: 'Roboto',
-                        // //    weight: FontWeight.w500,
-                        // //    fontsize: 13.86.sp,
-                        // //  )
-                        // //       :Container(),
-                        //  //    Container(
-                        //  //      width: w/1.4,
-                        //  //      margin: EdgeInsets.only(top:!Platform.isIOS?40.h: 10.h),
-                        //  //      child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quam scelerisque donec varius.',
-                        //  //        textAlign: TextAlign.center, style: TextStyle(
-                        //  //       color: Color(0xffEAEAEA),
-                        //  //       fontFamily: 'Red Hat Text',
-                        //  //       fontSize: 11.sp,
-                        //  //       fontWeight: FontWeight.w300,
-                        //  //       height: 1.3636363636363635.h
-                        //  // ),),
-                        //  //    )
-                        //  Container(
-                        //    margin: EdgeInsets.only(top: h/50),
-                        //    child: InkWell(
-                        //      onTap: () async {
-                        //        bool result = await InternetConnectionChecker().hasConnection;
-                        //        if (result == true) {
-                        //          WidgetsBinding.instance
-                        //              .addPostFrameCallback(
-                        //                  (_) => Navigator.push(
-                        //                context,
-                        //                MaterialPageRoute(
-                        //                  builder: (context) =>
-                        //                      SignUp(),
-                        //                ),
-                        //              ));
-                        //        } else {
-                        //          AnimatedSnackBar.material(
-                        //            'Check your internet connection',
-                        //            duration: Duration(seconds: 2),
-                        //            type: AnimatedSnackBarType.error,
-                        //          ).show(
-                        //            context,
-                        //          );
-                        //          // CommingSoonPopup(context,
-                        //          //     "Check your internet connection then try again", "Ok", 17);
-                        //        }
-                        //      },
-                        //      child: Column(
-                        //        mainAxisAlignment:
-                        //        MainAxisAlignment.start,
-                        //        children: [
-                        //          Text('Don’t have an account?',
-                        //              textAlign: TextAlign.center,
-                        //              style: _TextTheme.headline1!
-                        //                  .copyWith(
-                        //                  fontSize: 14.sp,
-                        //                  letterSpacing: 0.3,
-                        //                  fontWeight:
-                        //                  FontWeight.w300,
-                        //                  height: 1)),
-                        //          Text("Sign up",
-                        //              textAlign: TextAlign.center,
-                        //              style: _TextTheme.headline1!
-                        //                  .copyWith(
-                        //                  decoration: TextDecoration
-                        //                      .underline,
-                        //                  fontSize: 9.sp,
-                        //                  letterSpacing: 0.3,
-                        //                  fontWeight:
-                        //                  FontWeight.w500,
-                        //                  height: 1)),
-                        //        ],
-                        //      ),
-                        //    ),
-                        //  ),
                       ],
                     ),
                   ),
-                  state.isLoading == true
-                      ? Center(child: listLoader(context: context))
-                      : Container(),
-
                 ]),
               ));
         });

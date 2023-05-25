@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thementr/Core/constants/strings.dart';
 
  var COLOR_PRIMARY = Colors.deepOrangeAccent;
 var COLOR_ACCENT = Colors.orange;
@@ -10,7 +11,7 @@ var App_Dark= Color(0xff303030);
 var PermissionScreen= Color(0xffCF6D38);
 
 TextStyle Font1 =  GoogleFonts.inter().copyWith(
-    color: Color(0xff2B2B2B),
+    color: DarkColor,
     fontSize: 20.sp,
     fontWeight: FontWeight.w600,
     height: 1.h

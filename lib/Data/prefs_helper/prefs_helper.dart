@@ -41,6 +41,7 @@ import 'iprefs_helper.dart';
 // // const  NOTIFI = "NOTIFI";
 // const  IS_soical = "IS_soi-cal";
 const  is_new_user = "is_new_user";
+const  access_token = "access_token";
 
 
 class PrefsHelper implements IPrefsHelper {
@@ -126,47 +127,47 @@ class PrefsHelper implements IPrefsHelper {
 //   Future<bool> GetThemeON() async{
 //     return ((await getPrefs()).getBool(SetThemeON1)??true);
 //   }
-//
-//  //  @override
-//  //  Future<void> saveUser(UserModel user, String token,bool active) async {
-//  //
-//  //    (await getPrefs()).setInt(ID, user.data!.id??0);
-//  //    (await getPrefs()).setString(Serial_number, user.data!.serialnumber??"");
-//  //    (await getPrefs()).setString(Serial, user.data!.serial??"");
-//  //    (await getPrefs()).setString(Avatar, user.data!.avatar??"");
-//  //    (await getPrefs()).setString(Alias, user.data!.alias??"");
-//  //    (await getPrefs()).setString(BackGround_Color, user.data!.background_color??"");
-//  //    (await getPrefs()).setString(first_name, user.data!.first_name?? "");
-//  //    (await getPrefs()).setString(last_name,user.data!.last_name ?? "");
-//  //    (await getPrefs()).setString(EMAIL, user.data!.email?? "");
-//  //    (await getPrefs()).setString(Boi, user.data!.bio?? "");
-//  //    (await getPrefs()).setString(Boi, user.data!.bio?? "");
-//  // //   (await getPrefs()).setString(Gender, user.data!.gender?? "");
-//  // user.token!.isNotEmpty?
-//  //    (await getPrefs()).setString(access_token, user.token ?? "")
-//  //     :print("token empty");
-//  //    (await getPrefs()).setInt(is_Creator, user.data!.is_creator?? 0);
-//  //    // (await getPrefs()).setDouble(lat, user.user!.data!.langtitude ?? 0);
-//  //    // (await getPrefs()).setDouble(lng, user.user!.data!.lattitude ?? 0);
-//  //  //  (await getPrefs()).setString(refresh_token, user.data!.token!.refresh_token ?? "");
-//  //    (await getPrefs()).setString(TOKEN, "Bearer ${user.token}");
-//  //    if(active){
-//  //      (await getPrefs()).setBool(IS_LOGIN, true);
-//  //    }
-//  //
-//  //    print(((await getPrefs()).getInt(ID)));
-//  //    print(((await getPrefs()).getString(Avatar)));
-//  //    print(((await getPrefs()).getString(first_name)));
-//  //    print(((await getPrefs()).getString(last_name)));
-//  //    print(((await getPrefs()).getString(EMAIL)));
-//  //   // print(((await getPrefs()).getString(Gender)));
-//  //    print(((await getPrefs()).getString(TOKEN)));
-//  //    print(((await getPrefs()).getBool(IS_LOGIN)));
-//  //    print("Stored in Shared");
-//  //
-//  //  }
-//  //
-//  //
+
+ //  @override
+ //  Future<void> saveUser(UserModel user, String token,bool active) async {
+ //
+ //    (await getPrefs()).setInt(ID, user.data!.id??0);
+ //    (await getPrefs()).setString(Serial_number, user.data!.serialnumber??"");
+ //    (await getPrefs()).setString(Serial, user.data!.serial??"");
+ //    (await getPrefs()).setString(Avatar, user.data!.avatar??"");
+ //    (await getPrefs()).setString(Alias, user.data!.alias??"");
+ //    (await getPrefs()).setString(BackGround_Color, user.data!.background_color??"");
+ //    (await getPrefs()).setString(first_name, user.data!.first_name?? "");
+ //    (await getPrefs()).setString(last_name,user.data!.last_name ?? "");
+ //    (await getPrefs()).setString(EMAIL, user.data!.email?? "");
+ //    (await getPrefs()).setString(Boi, user.data!.bio?? "");
+ //    (await getPrefs()).setString(Boi, user.data!.bio?? "");
+ // //   (await getPrefs()).setString(Gender, user.data!.gender?? "");
+ // user.token!.isNotEmpty?
+ //    (await getPrefs()).setString(access_token, user.token ?? "")
+ //     :print("token empty");
+ //    (await getPrefs()).setInt(is_Creator, user.data!.is_creator?? 0);
+ //    // (await getPrefs()).setDouble(lat, user.user!.data!.langtitude ?? 0);
+ //    // (await getPrefs()).setDouble(lng, user.user!.data!.lattitude ?? 0);
+ //  //  (await getPrefs()).setString(refresh_token, user.data!.token!.refresh_token ?? "");
+ //    (await getPrefs()).setString(TOKEN, "Bearer ${user.token}");
+ //    if(active){
+ //      (await getPrefs()).setBool(IS_LOGIN, true);
+ //    }
+ //
+ //    print(((await getPrefs()).getInt(ID)));
+ //    print(((await getPrefs()).getString(Avatar)));
+ //    print(((await getPrefs()).getString(first_name)));
+ //    print(((await getPrefs()).getString(last_name)));
+ //    print(((await getPrefs()).getString(EMAIL)));
+ //   // print(((await getPrefs()).getString(Gender)));
+ //    print(((await getPrefs()).getString(TOKEN)));
+ //    print(((await getPrefs()).getBool(IS_LOGIN)));
+ //    print("Stored in Shared");
+ //
+ //  }
+ //
+ //
 //  //
 //  //  @override
 //  //  Future<UserModel> getUser() async{
@@ -286,15 +287,15 @@ class PrefsHelper implements IPrefsHelper {
 //   (await getPrefs()).setDouble(lng, Lng);
 // }
 //
-// @override
-// Future<String> getToken() async {
-//   return ((await getPrefs()).getString(access_token)??"");
-// }
-//   @override
-//   Future<void> SetToken(String token) async{
-//     (await getPrefs()).setString(access_token,token);
-//   }//
-//
+@override
+Future<String> getToken() async {
+  return ((await getPrefs()).getString(access_token)??"");
+}
+  @override
+  Future<void> SetToken(String token) async{
+    (await getPrefs()).setString(access_token,token);
+  }//
+
 //
 //   @override
 // Future<int> getUserId() async {

@@ -7,15 +7,15 @@
 
 
 <key>FacebookAppID</key>
-<string>2590262397784969</string>
+<string>422957610034154</string>
 
 <key>FacebookClientToken</key>
-<string>6258ddd22fddb8f32e3da5229443f510</string>
+<string>d364a0cf52fccfc1369fb9b60ffb8b0c</string>
 
 <array>
     <string>twitter</string>
-
 </array>
+
 <key>FlutterDeepLinkingEnabled</key>
 <true/>
 

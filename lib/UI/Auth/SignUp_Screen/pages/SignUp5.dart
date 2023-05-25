@@ -2,7 +2,9 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 import 'dart:io';
 
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:thementr/App/app.dart';
+import 'package:thementr/Core/Classes/Classes.dart';
 import 'package:thementr/Core/Functions/Fucntions.dart';
 import 'package:thementr/Core/widgets/CustomButton.dart';
 import 'package:thementr/Core/widgets/Custom_Textfield.dart';
@@ -27,212 +29,61 @@ import '../../../../core/theme/theme_constants.dart';
 import '../../Login_screen/pages/Login_Page.dart';
 
 class SignUp5 extends StatefulWidget {
+  user? User;
+  String? Interest_Value;
+  SignUp5(this.User,this.Interest_Value);
   @override
   _SignUp5State createState() => _SignUp5State();
 }
 
 class _SignUp5State extends State<SignUp5> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final Pref = PrefsHelper();
-  late FocusNode FoucesNodePass;
-  late FocusNode FoucesNodeEmail;
-  late FocusNode FoucesNodeConfirm;
-
   bool? DiditOnce = true;
-  bool DIALOG = false;
-  double? lat;
-  double? lng;
-  String? fcmToken;
-
   final bloc2 = sl<SignUpBloc>();
-  final _formkey1 = GlobalKey<FormState>();
-  final _formkey2 = GlobalKey<FormState>();
-  final _formkey3 = GlobalKey<FormState>();
-  final TextEditingController _EmailController = TextEditingController();
-  final TextEditingController _PassController = TextEditingController();
-  final TextEditingController _ConfirmpassController = TextEditingController();
-
-  final PasswordValidation =
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-  final nameValidation = RegExp(r"^[\p{Letter}\p{Number}]+$");
-  final emailvalidaition = RegExp(
-      r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0"
-      r"-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u0"
-      r"0A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)"
-      r"+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDC"
-      r"F\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(("
-      r"(\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(("
-      r"[a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]"
-      r")*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-"
-      r"z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0"
-      r"-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$");
-
-  //                 //(?=.*[A-Z])       // should contain at least one upper case
-  //                                                     //   (?=.*[a-z])       // should contain at least one lower case
-  //                                                     //   (?=.*?[0-9])      // should contain at least one digit
-  //                                                     //   (?=.*?[!@#\$&*~]) // should contain at least one Special character
-  //                                                     //   .{8,}             // Must be at least 8 characters in length
-
-  final AtleastOneUperCase = RegExp("(?=.*[A-Z])");
-  final containAtleastOneLowercase = RegExp("(?=.*[a-z])");
-  final shouldContainAtleastOneDigit = RegExp("(?=.*?[0-9])");
-  final least8CharactersInLength = RegExp(".{8,}");
-
-  // Future<void> GetlatAndLng() async {
-  //   lat = await Pref.Getlat();
-  //   lng = await Pref.GetLng();
-  //   print(" User lat and lng ??! : $lat , $lng ");
-  // }
-  List<Widget> Interests_Containers = [
-
-
-  ];
+  int sum = 0;
 
   @override
   void initState() {
-    FoucesNodePass = FocusNode();
-    FoucesNodeEmail = FocusNode();
-    FoucesNodeConfirm = FocusNode();
     super.initState();
-    Interests_Containers = List.filled(20,  RemoveHighlight( InkWell(
-      onTap: (){
-
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: 50.h,
-            decoration: BoxDecoration(
-              borderRadius: border(50, 50, 50, 50),
-              color:  Color.fromRGBO(255, 255, 255, 1),
-              border: Border.all(
-                color: Color.fromRGBO(7, 123, 205, 1),
-                width: 1.w,
-              ),
-            ),
-            child: Container(
-              margin: EdgeInsets.only(top: 8.h,left: 24.w,right: 24.w),
-              child: Center(
-                child: Text("UI/UX Design",
-                  style: Font1.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.sp
-                  ),),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),),);
-    // _EmailController.addListener(() {
-    //   if (_EmailController.text.isEmpty || _PassController.text.isEmpty || _ConfirmpassController.text.isEmpty ){
-    //     bloc2.add(ChangeSelected((b) => b..status = false));
-    //   }else{
-    //     bloc2.add(ChangeSelected((b) => b..status = true));
-    //   }
-    // });
-//
-//     _EmailController.addListener(() {
-//       if (_EmailController.text.isEmpty){
-//         bloc2.add(ChangeSelected((b) => b..status = false));
-//       }
-//     });
-//     _PassController.addListener(() {
-//       if (_PassController.text.isEmpty){
-//         bloc2.add(ChangeSelected((b) => b..status = false));
-//       }
-//     });
-//
-//
-//     _ConfirmpassController.addListener(() {
-//       if (_ConfirmpassController.text.isEmpty ){
-//         bloc2.add(ChangeSelected((b) => b..status = false));
-//       }
-//     });
-
-    //Selected
+    bloc2.add(getSkills((b) => b..interest=widget.Interest_Value));
   }
+
+
   ScrollController scrollController =  ScrollController();
   @override
   void dispose() {
     super.dispose();
-    FoucesNodeEmail.dispose();
-    FoucesNodePass.dispose();
-    _PassController.dispose();
-    _EmailController.dispose();
-    _ConfirmpassController.dispose();
-    FoucesNodeConfirm.dispose();
+    scrollController.dispose();
   }
 
-  bool Diditonce = false;
-  bool Selected = false;
+
 
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    TextTheme _TextTheme = Theme.of(context).textTheme;
-    ColorScheme ColorS = Theme.of(context).colorScheme;
     return BlocBuilder(
         bloc: bloc2,
         builder: (BuildContext context, SignUpState state) {
-          // if (state.success == true && Diditonce == true) {
-          //     if (state.Checkemail!.msg == "success") {
-          //       WidgetsBinding.instance.addPostFrameCallback((_) {
-          //         UsersData Users = UsersData(
-          //             Email: _EmailController.text.toLowerCase(),
-          //             Pass: _PassController.text,
-          //             ConfirmPass: _ConfirmpassController.text);
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => Onboarding2(
-          //               //  Onboarding1(
-          //               Users: Users,
-          //             ),
-          //           ),
-          //         );
-          //       });
-          //     }
-          //     else if ( state.Checkemail!.msg=="email already has been Taken"){
-          //       WidgetsBinding.instance.addPostFrameCallback((_) {
-          //         CommingSoonPopup(context, "Email already has been taken","Ok",17,(){  Navigator.pop(context);});
-          //       });
-          //     }
-          //   Diditonce = false;
-          // }
+
           return Scaffold(
               resizeToAvoidBottomInset: false,
               key: _scaffoldKey,
               backgroundColor: Colors.white,
               body: SafeArea(
-                child: Stack(children: [
+                child: Stack(children:[
                   Container(
                     width: w,
                     height: h,
                     child: Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 136.h),
-                          child: Center(
-                            child: Text(
-                              'TheMentr',
-                              style: Font1.copyWith(
-                                fontSize: 32.sp,
-                                  color: Color(0xff015595)
-                              ),
-                            ),
-                          ),
-                        ),
+                        AppLogoTitle(),
                         Container(
                           child: Column(
-                            children: [
+                            children:[
                               Container(
                                 width: w,
-                                margin: EdgeInsets.only(
-                                    top: 38.h, left: 18.w, bottom: 14.h),
+                                margin: EdgeInsets.only(top: 38.h, left: 18.w, bottom: 14.h),
                                 child: Container(
                                   child: Text(
                                     'Choose your interests',
@@ -256,6 +107,7 @@ class _SignUp5State extends State<SignUp5> with WidgetsBindingObserver {
                               ),
                               Container(
                                 height: 350.h,
+                                width: w,
                                 margin: EdgeInsets.only(top: 45.h,left: 13.w,right: 21.w),
                                 child: ScrollConfiguration(
                                     behavior: MyBehavior(),
@@ -267,10 +119,69 @@ class _SignUp5State extends State<SignUp5> with WidgetsBindingObserver {
                                     spacing: 28, // gap between adjacent chips
                                     runSpacing: 33, // gap between lines
                                     direction: Axis.horizontal,
-                                    children: Interests_Containers
+                                    children:[
+                                      for(int i =0;i<state.Skills_VaLues!.length;i++)
+                                      RemoveHighlight( InkWell(
+                                        onTap: (){
+                                          for(int i =0;i<state.SelectedInterestItems!.length;i++){
+                                            sum = (state.SelectedInterestItems![i] == true)?sum + 1:sum;
+                                          }
+
+                                          if ( state.SelectedInterestItems![i] == true) {
+                                            bloc2.add(ChangeSelectedInInterest((b) => b
+                                              ..Index =i
+                                              ..value = false
+                                                ..ID = 0
+                                            ));
+                                          } else {
+                                            print("Sum  : $sum");
+                                            if (sum < 5) {
+                                              bloc2.add(ChangeSelectedInInterest((b) => b
+                                                ..Index =i
+                                                ..value = true
+                                                ..ID = 0
+                                              ));
+                                            }else{
+                                              ShowAnimatedTopbar(context, "You reached the maximum number of interests.",AnimatedSnackBarType.error);
+                                            }
+                                          }
+                                          sum = 0;
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius: border(50, 50, 50, 50),
+                                                color: state.isLoading!? Color.fromRGBO(255, 255, 255, 1)
+                                                    :state.SelectedInterestItems![i]
+                                                    ? Color(0xffCEEAFF)
+                                                    : Color.fromRGBO(255, 255, 255, 1),
+                                                border: Border.all(
+                                                  color: Color.fromRGBO(7, 123, 205, 1),
+                                                  width: 1.w,
+                                                ),
+                                              ),
+                                              child: Container(
+                                                margin: EdgeInsets.only(top: 8.h,left: 18.w,right: 18.w),
+                                                child: Center(
+                                                  child: Text(state.Skills_VaLues![i],
+                                                    style: Font1.copyWith(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 16.sp
+                                                    ),),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),),
+                                    ]
                                 ),))
                               ),
-                          RemoveHighlight(      Center(child: InkWell(
+                              RemoveHighlight(Center(child:InkWell(
                                 onTap: (){
                                   scrollController.animateTo(
                                     scrollController.position.maxScrollExtent,
@@ -293,55 +204,20 @@ class _SignUp5State extends State<SignUp5> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
-                              )),),
+                              ))),
                               Container(
                                 margin: EdgeInsets.only(top: 73.h),
                                 child: CustomButton(
                                   onPressed: () async {
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) =>
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => SignUp6(),
-                                              ),
-                                            ));
-                                    // if (state.Pageindex==2){
-                                    //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) => Login(),
-                                    //     ),
-                                    //   ));
-                                    // }
-                                    // if (state.Pageindex! != 2){
-                                    //   _SliderBloc.add(ChangePageIndex(((b) => b..index = state.Pageindex! +1)));
-                                    //   _pageController.animateToPage(
-                                    //     state.Pageindex ! + 1,
-                                    //     duration: Duration(milliseconds: 700),
-                                    //     curve: Curves.easeIn,
-                                    //   );
-                                    // }
+                                    List<String> Selected_Values=[];
+                                    for(int i=0;i<state.SelectedInterestItems!.length;i++){
+                                      if(state.SelectedInterestItems![i]){
+                                        Selected_Values.add(state.Skills_VaLues![i]);
+                                      }
+                                    }
 
-                                    // bool result =await InternetConnectionChecker().hasConnection;
-                                    // if (result == true) {
-                                    //   // if (_formkey1.currentState! .validate()) {
-                                    //   //   WidgetsBinding.instance.addPostFrameCallback( (_) => Navigator.push(
-                                    //   //     context,
-                                    //   //     MaterialPageRoute(
-                                    //   //       builder: (context) => Login2(Email: _EmailController.text,),
-                                    //   //     ),
-                                    //   //   ));
-                                    //   // }
-                                    // } else {
-                                    //   AnimatedSnackBar.material(
-                                    //     'Check your internet connection',
-                                    //     duration: Duration(seconds: 2),
-                                    //     type: AnimatedSnackBarType.error,
-                                    //   ).show(
-                                    //     context,
-                                    //   );
-                                    // }
+                                    widget.User!.Interests = Selected_Values;
+                                    PushNavigator(context,SignUp6(widget.User!));
                                   },
                                   ButtonText: 'Continue',
                                   btnColor: Color(0xff015595),

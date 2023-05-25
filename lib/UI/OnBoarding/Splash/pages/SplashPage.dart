@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thementr/Data/prefs_helper/iprefs_helper.dart';
 import 'package:thementr/Injection.dart';
 import 'package:thementr/UI/Auth/Login_screen/pages/Login_Page.dart';
-import 'package:thementr/UI/OnBoarding/Slider/introduction_animation_screen.dart';
-import 'package:thementr/UI/OnBoarding/Slider/pages/splash_view.dart';
 import 'package:thementr/UI/OnBoarding/Slider2/pages/Slider.dart';
-
+import 'package:lottie/lottie.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -18,9 +17,9 @@ class _SplashState extends State<Splash>  with TickerProviderStateMixin{
  // AnimationController? _animationController;
 
   final pref = sl<IPrefsHelper>();
-  Future<void> SetNotFirstTime() async {
-    await pref.SetNOTnewUser();
-  }
+  // Future<void> SetNotFirstTime() async {
+  //   await pref.SetNOTnewUser();
+  // }
   bool islogedin = false;
   Future<void> GetISloggedIN() async {
     islogedin = await pref.GetIsNewUser();
@@ -36,18 +35,21 @@ class _SplashState extends State<Splash>  with TickerProviderStateMixin{
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>slider()
+          builder: (context) => islogedin
+              ?  slider()
+              :  Login()
+
+
           // islogedin?
           //     IntroductionAnimationScreen():Container(),
         ),
       );
     });
-    SetNotFirstTime();
   }
 
   @override
   void initState() {
-   // GetISloggedIN();
+   GetISloggedIN();
     delay();
     // _animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 8));
@@ -64,12 +66,35 @@ class _SplashState extends State<Splash>  with TickerProviderStateMixin{
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-        Center(
-          child: Container(
-            width: w/1.2,
-            child:Image.asset("Assets/images/m white_092609 1.png"),
-          ),
-        )
+        Stack(
+          children: [
+            Center(
+              child: Container(
+                width: w/1.2,
+                child:Image.asset("Assets/images/m white_092609 1.png"),
+              ),
+            ),
+
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 110.h,
+              child: Container(
+
+                  width: 20.w,
+                  height: 400.h,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Lottie.asset('Assets/Lottie/circle-loader.json',),
+                    ],
+                  )),
+            ),
+          ],
+
+        ),
+
+
         ],
       ),
     );

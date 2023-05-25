@@ -38,10 +38,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+//    plugins {
+//        id 'com.android.application'
+//        id 'com.google.gms.google-services'
+//
+//    }
+    apply plugin: 'com.google.gms.google-services'
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.Saedyo45.thementr"
+        applicationId "com.OptikkalTech.thementr"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21
@@ -80,7 +85,7 @@ android {
         // When using the BoM, you don't specify versions in Firebase library dependencies
         implementation 'com.google.firebase:firebase-auth'
 
-
+        implementation 'com.google.firebase:firebase-analytics'
     }
 
     lintOptions {
@@ -94,3 +99,4 @@ android {
 flutter {
     source '../..'
 }
+
