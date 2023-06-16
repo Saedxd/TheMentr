@@ -69,8 +69,10 @@ void main() async {
 //git add README.md
 //git commit -m "first commit"
 //git branch -M sub_sub
+// git remote remove origin
+
 //https://github.com/Saedxd/Bubbles/tree/sub_main
-//git remote add origin https://github.com/Optikkaltech-io/mentorshipAppFlutter
+//git remote add origin https://github.com/Saedxd/TheMentr
 //git push -u origin main
 //…or push an existing repository from the command line
 
